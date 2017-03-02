@@ -8,6 +8,7 @@ Dim sectionStore As New Collection
 Dim rowStore As New Collection
 Dim ugSections As New Collection
 Dim gSections As New Collection
+
 Dim sectionStoreG As New Collection
 Dim rowStoreG As New Collection
 Dim blockStoreG As New Collection
@@ -147,7 +148,6 @@ ElseIf countFullLoop = 0 Then
 End If
 
 m = m + 1
-
 
 Next section
 
