@@ -1,0 +1,149 @@
+'The purpose of this method is to schedule sections from the Sections List evenly across all the blocks
+Sub Schedule_Sections_Click()
+
+Dim sectionSheet As Worksheet
+Set sectionSheet = ThisWorkbook.Sheets("Sections List")
+
+Dim sectionStore As New Collection
+Dim rowStore As New Collection
+Dim ugSections As New Collection
+Dim gSections As New Collection
+
+'all of the following will be used to assign blocks to the first two sections of each UG course
+Dim countSeven As Integer
+Dim morningBlocks
+morningBlocks = Array(1, 2, 3, 4, 5, 6, 7)
+Dim afternoonBlocks
+afternoonBlocks = Array(8, 9, 11, 12, 13, 14, 15)
+
+'the following will be used to assign blocks to the remaining UG sections
+Dim countSix As Integer
+Dim otherBlocks
+otherBlocks = Array(10, 16, 17, 18, 19, 20)
+Dim countTwenty As Integer
+Dim allBlocks
+allBlocks = Array(20, 19, 18, 17, 16, 10, 15, 14, 13, 12, 11, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+
+
+Dim countFullLoop       'this will be used to count the number of times the morningBlocks and afternoonBlocks arrays have looped
+countFullLoop = 0
+
+Dim sectionRow As Integer    'track the row that a section is in
+sectionRow = 1
+
+
+'This for loop will split the [sections] list into a list of undergrad and a list of grad sections, each stored in a collection
+Dim section
+For Each section In [sections]
+
+Dim sec As String
+sec = CStr(section)     'not sure if this is necessary, but want to ensure section is casted as string
+
+    If Mid(sec, 3, 2) < 5 Then
+        ugSections.Add section
+    Else
+        gSections.Add section
+    End If
+Next section
+
+countSeven = 0      'this counter will be used to assign blocks to courses using the morning and afternoon arrays
+'This for loop will test whether a course has two or more sections
+'For those courses with at least two sections, the first two sections will be assigned to a morning and an afternoon block
+'Those sections for which the course does not have two sections will be stored in the sectionStore collection
+'Those sections which exceed the first two sections of a course will also be stored in the sectionStore collection
+
+For Each section In ugSections
+
+sectionRow = sectionRow + 1
+
+
+Dim strArray() As String
+Dim sect As String
+sect = CStr(section)
+strArray() = Split(sect, "-")
+
+    If hasTwoSections(strArray(0)) = True Then      'if the course has two sections
+        'the first section goes to a morningBlock
+        If strArray(1) = 1 Then
+            sectionSheet.Cells(sectionRow, 2) = morningBlocks(countSeven)
+        'the second section goes to an afternoonBlock
+        ElseIf strArray(1) = 2 Then
+            sectionSheet.Cells(sectionRow, 2) = afternoonBlocks(countSeven)
+            
+            'this section increases the index used to select blocks from the Blocks arrays
+            'if the index is increased over the range of the arrays, it is reset to zero and a FullLoop counter
+            'increases by 1 to count how many times all the blocks in each array have been filled in total
+            countSeven = countSeven + 1
+            If countSeven = 7 Then
+                countSeven = 0
+                countFullLoop = countFullLoop + 1
+            End If
+        'Any other sections over 2 are stored for later
+        Else
+            sectionStore.Add section
+            rowStore.Add sectionRow
+        End If
+    'if the course does not have 2 sections, the section is stored for later
+    Else
+        sectionStore.Add section
+        rowStore.Add sectionRow
+    End If
+
+Next section
+
+
+'This for loop will assign a block to each section in the sectionStore collection
+Dim m As Integer
+m = 1
+Dim x As Integer
+x = 0
+countSix = 0
+countTwenty = 0
+For Each section In sectionStore
+
+'if the morning and afternoon loops ran a full course or more, this if statement will assign the other blocks to sections
+'until they have caught up to the morning and afternoon block count
+If countFullLoop > 0 Then
+    sectionSheet.Cells(rowStore(m), 2) = otherBlocks(countSix)
+    'this counter keeps track of the otherBlock index and the if statement resets it when it reaches 6
+    countSix = countSix + 1
+    If countSix = 6 Then
+        countSix = 0
+        countFullLoop = countFullLoop - 1       'each time the full array of otherBlocks are assigned, the countFullLoop variable is reduced until it is zero
+                                                'and the count is even for otherBlocks and the morning and afternoon Blocks
+    End If
+
+'the code contained in this elseif runs the remainder of the morning and afternoon loop if it is not finished
+'and assigns the remaining sections block numbers using the allBlocks array which starts with the otherBlocks in
+'order to catch up to the morning and afternoon Blocks count if they needed to finish the loop count to seven
+ElseIf countFullLoop = 0 Then
+    If countSeven = 0 Then
+        sectionSheet.Cells(rowStore(m), 2) = allBlocks(countTwenty)
+        countTwenty = countTwenty + 1
+        If countTwenty = 20 Then
+            countTwenty = 0
+        End If
+    ElseIf countSeven > 0 Then
+        If x = 0 Then
+            sectionSheet.Cells(rowStore(m), 2) = morningBlocks(countSeven)
+            x = 1
+        ElseIf x = 1 Then
+            sectionSheet.Cells(rowStore(m), 2) = afternoonBlocks(countSeven)
+            countSeven = countSeven + 1
+            x = 0
+            If countSeven = 7 Then
+                countSeven = 0
+                x = 3
+            End If
+        End If
+    End If
+End If
+
+m = m + 1
+Next section
+
+
+
+
+
+End Sub
