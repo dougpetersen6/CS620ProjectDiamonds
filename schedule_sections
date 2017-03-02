@@ -8,6 +8,9 @@ Dim sectionStore As New Collection
 Dim rowStore As New Collection
 Dim ugSections As New Collection
 Dim gSections As New Collection
+Dim sectionStoreG As New Collection
+Dim rowStoreG As New Collection
+Dim blockStoreG As New Collection
 
 'all of the following will be used to assign blocks to the first two sections of each UG course
 Dim countSeven As Integer
@@ -23,6 +26,10 @@ otherBlocks = Array(10, 16, 17, 18, 19, 20)
 Dim countTwenty As Integer
 Dim allBlocks
 allBlocks = Array(20, 19, 18, 17, 16, 10, 15, 14, 13, 12, 11, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+
+Dim countEight As Integer
+Dim gradBlocks
+gradBlocks = Array("21", "22", "23", "24", "25", "26", "27", "28")
 
 
 Dim countFullLoop       'this will be used to count the number of times the morningBlocks and afternoonBlocks arrays have looped
@@ -140,10 +147,80 @@ ElseIf countFullLoop = 0 Then
 End If
 
 m = m + 1
+
+
 Next section
 
+countEight = 0
+countFullLoop = 0
+
+For Each section In gSections
+
+sectionRow = sectionRow + 1
 
 
+sect = CStr(section)
+strArray() = Split(sect, "-")
+
+        If hasTwoSections(strArray(0)) = True Then  'if the course has two sections
+        'the sections goes to a gradBlock one by one
+        
+            sectionSheet.Cells(sectionRow, 2) = gradBlocks(countEight)
+            
+            Dim a As String
+            a = gradBlocks(countEight)
+            blockStoreG.Add a                              'its blocks numbers are recorded in blockStoreG
+                                                            'and waited for those with only one section to fill in
+            countEight = countEight + 1
+            If countEight = 8 Then
+                countEight = 0
+                countFullLoop = countFullLoop + 1
+            End If
+        Else
+            sectionStoreG.Add section            'Course with only one section is stored
+            rowStoreG.Add sectionRow             'together with its row
+    End If
+
+
+Next section
+
+countEight = countEight + 0
+Dim e As Integer  'this counter tracks rowStoreG
+e = 1
+Dim f As Integer  'this couter tracks
+f = 1
+
+For Each section In sectionStoreG
+
+If countFullLoop > 0 Then               'if all gradblocks has been used
+    sectionSheet.Cells(rowStoreG(e), 2) = blockStoreG(f)    'assign Course with one section to blocks of multi-section courses
+    
+    f = f + 1
+    countEight = countEight + 1
+    If countEight = 8 Then
+        countEight = 0
+        countFullLoop = countFullLoop + 1
+    End If
+    If f = blockStoreG.Count Then               'if all multi-section courses' blocks are used up
+        f = 0                                   'start looping those blocks from the beginning
+    End If
+    countFullLoop = countFullLoop - 1
+    
+
+'the code contained in this Else assigns the remaining blocks to courses with one section when not all eight blocks have been used up
+Else
+    sectionSheet.Cells(rowStoreG(e), 2) = gradBlocks(countEight)
+    countEight = countEight + 1
+    If countEight = 8 Then
+        countEight = 0
+        countFullLoop = countFullLoop + 1
+    End If
+    
+End If
+
+e = e + 1
+
+Next section
 
 
 End Sub
