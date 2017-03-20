@@ -37,7 +37,4 @@ For Each course In [numSections]
 
 Next course
 
-
-
-
 End Sub
