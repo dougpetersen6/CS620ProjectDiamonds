@@ -4,10 +4,6 @@
 'The first column contains the name of the course which is formatted as Text
 'The second column contains a number (formatted as a number) that identifies how many sections of that course will be taught that semester.
 
-Sub Populate_Section_List_Click()
-
-Dim sectionSheet As Worksheet
-Set sectionSheet = ThisWorkbook.Sheets("Sections List")
 
 Worksheets("Sections List").Select
 
