@@ -1,0 +1,43 @@
+
+'The purpose of this method is to create a list of course sections based on the list provided by the registrar
+'The format of the list provided by the registrar is a two column list
+'The first column contains the name of the course which is formatted as Text
+'The second column contains a number (formatted as a number) that identifies how many sections of that course will be taught that semester.
+
+Sub Populate_Section_List_Click()
+
+Dim sectionSheet As Worksheet
+Set sectionSheet = ThisWorkbook.Sheets("Sections List")
+
+Worksheets("Sections List").Select
+
+Dim N As Integer
+N = 1
+Dim courseName As String
+Dim sections As Integer
+Dim fullName As Variant
+
+
+'the below for loop will select either the course from column 1 or the number from column 2 from the list provided by the registrar
+For Each course In [numSections]
+
+    'This if else loop identifies whether the list item is a course name or a number of sections
+    'if it is a course name, then that value is stored and the for loop runs to the column 2 value, the number of sections of that course
+    'the number of sections will enter the for I loop and populate a unique section name to the "sections" list on the sheet titled "Sections List"
+    If IsNumeric(course) Then
+        sections = course
+        For I = 1 To sections
+            N = N + 1
+            sectionSheet.Cells(N, 1) = CStr(courseName & "-" & I)
+        Next I
+    Else
+        courseName = course
+        
+    End If
+
+Next course
+
+
+
+
+End Sub
