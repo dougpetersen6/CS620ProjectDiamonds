@@ -33,7 +33,7 @@ For Each course In [numSections]
     Else
         courseName = course
         
-    End If
+
 
 Next course
 
