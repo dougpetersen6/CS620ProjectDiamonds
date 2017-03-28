@@ -13,29 +13,35 @@ Worksheets("Sections List").Select
 
 Dim N As Integer
 N = 1
-Dim courseName As String
+Dim CourseName As String
 Dim sections As Integer
 Dim fullName As Variant
 
 
 'the below for loop will select either the course from column 1 or the number from column 2 from the list provided by the registrar
-For Each course In [numSections]
+For Each Course In [numSections]
 
     'This if else loop identifies whether the list item is a course name or a number of sections
     'if it is a course name, then that value is stored and the for loop runs to the column 2 value, the number of sections of that course
     'the number of sections will enter the for I loop and populate a unique section name to the "sections" list on the sheet titled "Sections List"
-    If IsNumeric(course) Then
-        sections = course
+    If IsNumeric(Course) Then
+        sections = Course
         For I = 1 To sections
             N = N + 1
-            sectionSheet.Cells(N, 1) = CStr(courseName & "-" & I)
+            If I < 10 Then
+                sectionSheet.Cells(N, 1) = CStr(CourseName & "-" & I & "00")
+            Else
+                sectionSheet.Cells(N, 1) = CStr(CourseName & "-" & I & "0")
+            End If
         Next I
     Else
-        courseName = course
+        CourseName = Course
         
-end if 
-'test
+    End If
 
-Next course
+Next Course
+
+
+
 
 End Sub
