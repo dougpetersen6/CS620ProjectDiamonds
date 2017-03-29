@@ -8,7 +8,8 @@ Dim professors As Collection
 Dim nmbrPro As Long
 Dim proCntr As Long
 Dim nmbrBlock As Long
-
+Dim nmbrCourse As Long
+Dim preferredCourse As CPreferredCourse
 
 Set professors = New Collection
 
@@ -16,6 +17,7 @@ Set professors = New Collection
 nmbrPro = Worksheets("Block Preference").Range("A2").value
 Worksheets("Block Preference").Activate
 Range("B2").Activate
+
 
 'add professor to professors and assign preferredBlocks
 For proCntr = 0 To nmbrPro
@@ -46,6 +48,28 @@ For proCntr = 0 To nmbrPro
     Next
     'link preferredblocks to the professor. It's optional since every preferredblock has a professor
     professor.preferredBlocks = prefBlocks
+
+  'preferred course
+                'count number of courses
+nmbrCourse = Sheet1.Cells(1, Columns.Count).End(xlToLeft).Column
+
+For proCntr = 0 To nmbrPro
+    
+    'instantiate a preferred courses collection
+    Dim prefCourses As Collection
+    Set prefCrouses = New Collection
+    
+    'read preferred blocks
+    For nmbrCourse = 1 To numbrCourse
+        Set preferredCourse = New CPreferredCourse
+
+        
+        preferredCourse.PreferredBlockID = nmbrCourse
+        preferredCourse.PreferredLevel = ActiveCell.Offset(proCntr, (30 + nmbrBlock)).Value
+        preferredCourse.ProfessorName = professor.ProfessorName
+        
+        prefCourse.Add preferredCourse
+    
 
 Next
 'test
