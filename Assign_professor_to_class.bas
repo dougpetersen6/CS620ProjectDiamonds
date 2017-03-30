@@ -1,4 +1,4 @@
-Attribute VB_Name = "Assign_professor_to_block"
+Attribute VB_Name = "Assign_professor_to_class"
 Sub Assign_professor_to_class()
 
 Worksheets("Sections List").Activate
