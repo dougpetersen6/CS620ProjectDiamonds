@@ -1,3 +1,5 @@
+'This is Doug's copy of Master branch
+
 Attribute VB_Name = "Assign_professor_to_class"
 Sub Assign_professor_to_class()
 
