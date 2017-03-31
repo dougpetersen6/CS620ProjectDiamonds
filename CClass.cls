@@ -13,6 +13,7 @@ Option Explicit
 Private pClassID As Long
 Private pCourse As String
 Private pSection As String
+Private pBlock As Long
 Private pFaculty As String
 
 'ID property Getter
@@ -42,6 +43,16 @@ End Property
 Public Property Let Section(value As Long)
     pSection = value
 End Property
+'property Getter
+Public Property Get Block() As Long
+    Block = pBlock
+End Property
+
+'property Setter
+Public Property Let Block(value As Long)
+    pBlock = value
+End Property
+      
 'property Getter
 Public Property Get faculty() As String
     faculty = pFaculty
