@@ -10,8 +10,8 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private pPreferredCourseID As Long
-Private pPreferredCourseName As Long
-Private pFacultyName As String
+Private pPreferredCourseName As String
+Private pProfessorName As String
 Private pPreferredLevel As Long
 
 Public Property Get PreferredCourseID() As Long
@@ -28,12 +28,12 @@ End Property
 Public Property Let PreferredCourseName(value As String)
     pPreferredCourseName = value
 End Property
-Public Property Get FacultyName() As String
-    FacultyName = pFacultyName
+Public Property Get ProfessorName() As String
+    ProfessorName = pProfessorName
 End Property
 
-Public Property Let FacultyName(value As String)
-    pFacultyName = value
+Public Property Let ProfessorName(value As String)
+    pProfessorName = value
 End Property
 
 Public Property Get PreferredLevel() As Long
@@ -43,4 +43,10 @@ End Property
 Public Property Let PreferredLevel(value As Long)
     pPreferredLevel = value
 End Property
-
+Public Sub AddToList()
+    Worksheets("Sections List").Select
+    Range("F499").End(xlDown).Offset(1, 0).Select
+    'add preferred level
+    ActiveCell.value = Me.PreferredLevel
+    
+End Sub
