@@ -13,7 +13,7 @@ Option Explicit
 Private pClassID As Long
 Private pCourse As String
 Private pSection As String
-Private pBlock As Long
+Private pBlockID As Long
 Private pFaculty As String
 
 'ID property Getter
@@ -44,15 +44,14 @@ Public Property Let Section(value As Long)
     pSection = value
 End Property
 'property Getter
-Public Property Get Block() As Long
-    Block = pBlock
+Public Property Get blockID() As Long
+    blockID = pBlockID
 End Property
 
 'property Setter
-Public Property Let Block(value As Long)
-    pBlock = value
+Public Property Let blockID(value As Long)
+    pBlockID = value
 End Property
-      
 'property Getter
 Public Property Get faculty() As String
     faculty = pFaculty
@@ -62,3 +61,11 @@ End Property
 Public Property Let faculty(value As String)
     pFaculty = value
 End Property
+
+Public Sub AddToList()
+    Worksheets("Sections List").Select
+    Range("A499").End(xlDown).Offset(1, 0).Select
+    'add course & block
+    ActiveCell.value = Me.Course & "+" & Me.blockID
+    
+End Sub

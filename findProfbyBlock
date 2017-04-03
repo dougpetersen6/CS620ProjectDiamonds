@@ -1,0 +1,33 @@
+'Return a list of professors who prefer to teach at a certain blockID
+Function findProfByBlock(blockID As Long) As String
+'define a collection to store all professors
+Dim professors As Collection
+Set professors = New Collection
+'Initiate return value to be an empty string
+findProfByBlock = ""
+
+Dim proCntr As Long 'define a counter
+Dim nmbrPro As Long  'number of total professors
+nmbrPro = Worksheets("Sections List").Range("F2").value
+
+Dim block As Range
+Worksheets("Sections List").Activate
+'compare each block with the passed in blockID
+For Each block In [Blocks]
+    If block.value = blockID Then 'find the matching block
+     
+     For proCntr = 1 To nmbrPro
+        If (Worksheets("Sections List").Cells(proCntr + 1, block.Column).value = 0) Then 'find the preferedScale =0
+        professors.Add (Worksheets("Sections List").Cells(proCntr + 1, 7)) 'add the corresponding professor into the collection
+        End If
+     Next proCntr
+     Exit For 'exit for loop since there is only one block to be the same as the passed in blockID
+     End If
+Next block
+
+'loop the professors collection
+For p = 1 To professors.count
+findProfByBlock = findProfByBlock & professors.Item(p) & " . " 'assign collection items to be returned
+Next p
+
+End Function

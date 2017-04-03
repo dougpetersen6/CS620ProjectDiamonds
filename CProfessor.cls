@@ -13,8 +13,8 @@ Private pProfessorID As Long
 Private pProfessorName As String
 Private pProfessorType As String
 Private pTerminalDegree As Long
-Private pPreferredCourse As String
-Private pPreferredBlocks As Collection
+Private pPreferredCourses As Collection 'not sure if they should be array of strings
+Private pPreferredBlocks As Collection 'not sure if they should be array of Longs
 
 Public Property Get ProfessorID() As Long
     ProfessorID = pProfessorID
@@ -46,12 +46,12 @@ End Property
 Public Property Let TerminalDegree(value As Long)
     pTerminalDegree = value
 End Property
-Public Property Get PreferredCourse() As String
-    PreferredCourse = pPreferredCourse
+Public Property Get preferredCourses() As Collection
+   Set preferredCourses = pPreferredCourses
 End Property
 
-Public Property Let PreferredCourse(value As String)
-    pPreferredCourse = value
+Public Property Let preferredCourses(value As Collection)
+   Set pPreferredCourses = value
 End Property
 Public Property Get preferredBlocks() As Collection
     Set preferredBlocks = pPreferredBlocks
@@ -61,3 +61,13 @@ Public Property Let preferredBlocks(value As Collection)
     Set pPreferredBlocks = value
 End Property
 
+Public Sub AddToList()
+    Worksheets("Sections List").Select
+    Range("B499").End(xlDown).Offset(1, 0).Select
+    'add id, name, type, degree
+    ActiveCell.value = Me.ProfessorID
+    ActiveCell.Offset(0, 1).value = Me.ProfessorName
+    ActiveCell.Offset(0, 2).value = Me.ProfessorType
+    ActiveCell.Offset(0, 3).value = Me.TerminalDegree
+    
+End Sub

@@ -35,3 +35,10 @@ End Property
 Public Property Let PreferredLevel(value As Long)
     pPreferredLevel = value
 End Property
+Public Sub AddToList()
+    Worksheets("Sections List").Select
+    Range("G499").End(xlDown).Offset(1, 0).Select
+    'add preferred level
+    ActiveCell.value = Me.PreferredLevel
+    
+End Sub
