@@ -1,0 +1,43 @@
+This module reads professors' info(full/part-time & has (no) terminal degree) and preferred blocks
+Sub Link_PreferredBlocks()
+
+Dim professor As CProfessor
+Dim preferredCourse As CPreferredCourse
+Dim professors As Collection
+Dim nmbrPro As Long
+Dim proCntr As Long
+Dim nmbrCourse As Long
+
+
+Set professors = New Collection
+
+'read how many professors
+nmbrPro = Worksheets("Course Preference").Range("A2").Value
+Worksheets("Block Preference").Activate
+Range("B2").Activate
+'count number of courses
+nmbrCourse = Sheet1.Cells(1, Columns.Count).End(xlToLeft).Column
+
+For proCntr = 0 To nmbrPro
+    
+    'instantiate a preferred courses collection
+    Dim prefCourses As Collection
+    Set prefCrouses = New Collection
+    
+    'read preferred blocks
+    For nmbrCourse = 1 To numbrCourse
+        Set preferredCourse = New CPreferredCourse
+
+        
+        preferredCourse.PreferredBlockID = nmbrCourse
+        preferredCourse.PreferredLevel = ActiveCell.Offset(proCntr, (30 + nmbrBlock)).Value
+        preferredCourse.ProfessorName = professor.ProfessorName
+        
+        prefCourse.Add preferredCourse
+    Next
+    'link preferredblocks to the professor. It's optional since every preferredblock has a professor
+    professor.preferredCourse = prefCourse
+
+
+End Sub
+
